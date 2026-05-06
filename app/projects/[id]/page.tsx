@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getProject, getTasks, updateProject, getActivityLog } from "@/lib/firestore";
 import type { Project, Task, ActivityLog } from "@/lib/types";
-import { daysElapsed, daysRemaining, taskProgress, projectHealth, groupTasksByPhase } from "@/lib/utils";
+import { daysElapsed, daysRemaining, phaseProgress, projectHealth, groupTasksByPhase } from "@/lib/utils";
 import PhaseAccordion from "@/components/PhaseAccordion";
 import StatusChip from "@/components/StatusChip";
 import TypeBadge from "@/components/TypeBadge";
@@ -63,6 +63,13 @@ export default function ProjectDetailPage() {
     setTasks((prev) => [...prev, task]);
   }, []);
 
+  const handlePhaseToggle = async (phase: string, completed: boolean) => {
+    if (!project) return;
+    const updated = { ...project.completedPhases, [phase]: completed };
+    setProject({ ...project, completedPhases: updated });
+    await updateProject(id, { completedPhases: updated });
+  };
+
   const handleStatusChange = async (status: Project["status"]) => {
     if (!project) return;
     setProject({ ...project, status });
@@ -93,10 +100,10 @@ export default function ProjectDetailPage() {
 
   const elapsed = daysElapsed(project.startDate);
   const remaining = daysRemaining(project.startDate);
-  const pct = taskProgress(tasks);
-  const health = projectHealth(project, tasks);
   const grouped = groupTasksByPhase(tasks);
   const phases = sortedPhases(grouped);
+  const pct = phaseProgress(project.completedPhases, phases);
+  const health = projectHealth(project, tasks);
   const completedCount = tasks.filter((t) => t.completed).length;
   const blockedCount = tasks.filter((t) => t.status === "blocked" && !t.completed).length;
 
@@ -161,7 +168,7 @@ export default function ProjectDetailPage() {
           {/* Progress bar */}
           <div className="px-6 pb-4">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-gray-400">{completedCount} of {tasks.length} tasks complete</span>
+              <span className="text-xs text-gray-400">{phases.filter(p => project.completedPhases?.[p]).length} of {phases.length} phases complete</span>
               <span className="text-xs font-semibold text-gray-700">{pct}%</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-2">
@@ -206,6 +213,8 @@ export default function ProjectDetailPage() {
               phase={phase}
               tasks={grouped[phase] ?? []}
               projectId={id}
+              phaseCompleted={!!project.completedPhases?.[phase]}
+              onPhaseToggle={handlePhaseToggle}
               onUpdate={handleTaskUpdate}
               onDelete={handleTaskDelete}
               onAdd={handleTaskAdd}

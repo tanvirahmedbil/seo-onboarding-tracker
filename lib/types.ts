@@ -15,6 +15,7 @@ export interface Project {
   createdAt: Timestamp;
   createdBy: string;
   status: ProjectStatus;
+  completedPhases?: Record<string, boolean>;
 }
 
 export interface Task {

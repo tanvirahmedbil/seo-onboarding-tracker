@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { Project, Task } from "@/lib/types";
-import { daysElapsed, daysRemaining, taskProgress, projectHealth } from "@/lib/utils";
+import { daysElapsed, daysRemaining, phaseProgress, projectHealth, groupTasksByPhase } from "@/lib/utils";
 import StatusChip from "./StatusChip";
 import TypeBadge from "./TypeBadge";
 import ProgressBar from "./ProgressBar";
@@ -15,7 +15,9 @@ interface Props {
 export default function ProjectCard({ project, tasks }: Props) {
   const elapsed = daysElapsed(project.startDate);
   const remaining = daysRemaining(project.startDate);
-  const pct = taskProgress(tasks);
+  const grouped = groupTasksByPhase(tasks);
+  const phases = Object.keys(grouped);
+  const pct = phaseProgress(project.completedPhases, phases);
   const health = projectHealth(project, tasks);
   const startDateStr = project.startDate.toDate().toLocaleDateString("en-US", {
     month: "short",

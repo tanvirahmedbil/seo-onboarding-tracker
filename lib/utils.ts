@@ -35,6 +35,12 @@ export function clientTypeLabel(type: string): string {
   return type;
 }
 
+export function phaseProgress(completedPhases: Record<string, boolean> | undefined, phases: string[]): number {
+  if (phases.length === 0) return 0;
+  const done = phases.filter((p) => completedPhases?.[p]).length;
+  return Math.round((done / phases.length) * 100);
+}
+
 export function groupTasksByPhase(tasks: Task[]): Record<string, Task[]> {
   return tasks.reduce<Record<string, Task[]>>((acc, task) => {
     if (!acc[task.phase]) acc[task.phase] = [];
