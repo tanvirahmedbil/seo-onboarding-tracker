@@ -47,8 +47,14 @@ export default function PhaseAccordion({ phase, tasks, projectId, onUpdate, onDe
         className="w-full flex items-center justify-between px-4 py-3.5 text-left hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-3">
-          {/* Mini progress ring feel via simple indicator */}
-          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${allDone ? "bg-green-500" : blocked > 0 ? "bg-red-400" : "bg-gray-300"}`} />
+          {allDone ? (
+            <svg className="w-4 h-4 flex-shrink-0 text-green-500" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="7" fill="currentColor" opacity="0.15"/>
+              <path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          ) : (
+            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${blocked > 0 ? "bg-red-400" : "bg-gray-300"}`} />
+          )}
           <span className={`text-sm font-medium ${allDone ? "text-gray-400" : "text-gray-800"}`}>{phase}</span>
           <span className={`text-xs px-2 py-0.5 rounded-full ${allDone ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
             {done}/{tasks.length}
