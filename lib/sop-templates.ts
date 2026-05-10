@@ -20,6 +20,7 @@ const newSiteTasks: TaskTemplate[] = [
   { title: "Technical baseline recorded (crawl, CWV)", phase: "Technical Setup", dayTarget: 5, order: 7 },
   { title: "Keyword & competitor research completed", phase: "Research", dayTarget: 7, order: 8 },
   { title: "Content plan drafted", phase: "Research", dayTarget: 8, order: 9 },
+  { title: "Track initial ranks for the keywords", phase: "Research", dayTarget: 9, order: 10 },
 ];
 
 const noPriorSeoTasks: TaskTemplate[] = [
@@ -27,6 +28,7 @@ const noPriorSeoTasks: TaskTemplate[] = [
   { title: "GSC & GA4 baseline reviewed", phase: "Technical Audit", dayTarget: 5, order: 7 },
   { title: "Keyword & competitor research completed", phase: "Research", dayTarget: 7, order: 8 },
   { title: "Quick wins list built", phase: "Research", dayTarget: 8, order: 9 },
+  { title: "Track initial ranks for the keywords", phase: "Research", dayTarget: 9, order: 10 },
 ];
 
 const priorSeoTasks: TaskTemplate[] = [
@@ -34,6 +36,7 @@ const priorSeoTasks: TaskTemplate[] = [
   { title: "Full technical audit completed", phase: "Technical Audit", dayTarget: 6, order: 7 },
   { title: "Rankings, gaps & competitor analysis completed", phase: "Research", dayTarget: 7, order: 8 },
   { title: "Quick wins list built", phase: "Research", dayTarget: 8, order: 9 },
+  { title: "Track initial ranks for the keywords", phase: "Research", dayTarget: 9, order: 10 },
 ];
 
 export function getTasksForClientType(clientType: ClientType): TaskTemplate[] {
