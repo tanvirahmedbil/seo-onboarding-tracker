@@ -161,7 +161,7 @@ export default function TaskRow({ projectId, task, onUpdate, onDelete }: Props) 
               className={`text-xs px-2 py-1 rounded-md border transition-all ${
                 isBlocked
                   ? "bg-red-100 border-red-300 text-red-700 font-medium"
-                  : "border-transparent text-gray-300 hover:border-gray-200 hover:text-gray-500 opacity-0 group-hover:opacity-100"
+                  : "border-transparent text-gray-300 hover:border-gray-200 hover:text-gray-500 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
               }`}
             >
               {isBlocked ? "Blocked" : "Block"}
@@ -175,7 +175,7 @@ export default function TaskRow({ projectId, task, onUpdate, onDelete }: Props) 
             className={`w-7 h-7 rounded-md flex items-center justify-center transition-all ${
               task.notes
                 ? "text-blue-500 bg-blue-50"
-                : "text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100"
+                : "text-gray-300 hover:text-gray-500 opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
             }`}
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
@@ -187,7 +187,7 @@ export default function TaskRow({ projectId, task, onUpdate, onDelete }: Props) 
           <button
             onClick={handleDelete}
             title="Delete task"
-            className="w-7 h-7 rounded-md flex items-center justify-center text-gray-200 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100"
+            className="w-7 h-7 rounded-md flex items-center justify-center text-gray-200 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
               <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
