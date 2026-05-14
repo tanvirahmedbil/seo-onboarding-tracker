@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { Timestamp } from "firebase/firestore";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getProject, getTasks, updateProject, getActivityLog } from "@/lib/firestore";
@@ -72,8 +73,21 @@ export default function ProjectDetailPage() {
 
   const handleStatusChange = async (status: Project["status"]) => {
     if (!project) return;
-    setProject({ ...project, status });
-    await updateProject(id, { status });
+    const nextProject = {
+      ...project,
+      status,
+      completedAt:
+        status === "completed"
+          ? Timestamp.now()
+          : status === "active"
+            ? null
+            : project.completedAt ?? null,
+    };
+    setProject(nextProject);
+    await updateProject(id, {
+      status,
+      completedAt: nextProject.completedAt ?? null,
+    });
   };
 
   const loadActivity = async () => {

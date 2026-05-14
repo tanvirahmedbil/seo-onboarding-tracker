@@ -1,6 +1,8 @@
 import { Timestamp } from "firebase/firestore";
 import type { Task, Project } from "./types";
 
+export const ONBOARDING_DAYS = 15;
+
 export function daysElapsed(startDate: Timestamp): number {
   const start = startDate.toDate();
   const now = new Date();
@@ -9,7 +11,7 @@ export function daysElapsed(startDate: Timestamp): number {
 }
 
 export function daysRemaining(startDate: Timestamp): number {
-  return Math.max(0, 15 - daysElapsed(startDate) + 1);
+  return Math.max(0, ONBOARDING_DAYS - daysElapsed(startDate) + 1);
 }
 
 export function taskProgress(tasks: Task[]): number {
@@ -47,4 +49,23 @@ export function groupTasksByPhase(tasks: Task[]): Record<string, Task[]> {
     acc[task.phase].push(task);
     return acc;
   }, {});
+}
+
+export type DeliveryBucket = "timely" | "delayed";
+
+export function projectDeliveryDays(project: Project): number {
+  if (project.completedAt) {
+    const diff = Math.floor(
+      (project.completedAt.toDate().getTime() - project.startDate.toDate().getTime()) /
+      (1000 * 60 * 60 * 24)
+    );
+    return Math.max(0, diff) + 1;
+  }
+
+  return daysElapsed(project.startDate);
+}
+
+export function projectDeliveryBucket(project: Project): DeliveryBucket | null {
+  if (project.status === "archived") return null;
+  return projectDeliveryDays(project) <= ONBOARDING_DAYS ? "timely" : "delayed";
 }

@@ -31,6 +31,7 @@ export async function createProject(
     createdAt: serverTimestamp(),
     createdBy: userId,
     status: "active",
+    completedAt: null,
   });
 
   const templates = getTasksForClientType(clientType);
