@@ -43,7 +43,7 @@ export default function TaskRow({ projectId, task, onUpdate, onDelete }: Props) 
     await save({
       completed: !task.completed,
       completedAt: !task.completed ? now : null,
-      completedBy: !task.completed ? (user?.email ?? null) : null,
+      completedBy: null,
       status: task.completed ? "not_started" : task.status,
     });
   };
