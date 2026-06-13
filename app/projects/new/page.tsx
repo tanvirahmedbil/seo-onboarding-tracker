@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
 import { createProject } from "@/lib/firestore";
 import type { ClientType, AssignedTeam } from "@/lib/types";
 import Navbar from "@/components/Navbar";
-import AuthGuard from "@/components/AuthGuard";
 import Link from "next/link";
 
 const clientTypes: { value: ClientType; label: string; desc: string }[] = [
@@ -18,7 +16,6 @@ const clientTypes: { value: ClientType; label: string; desc: string }[] = [
 const teams: AssignedTeam[] = ["Team Tanvir", "Team Debasish", "Team Monir"];
 
 export default function NewProjectPage() {
-  const { user } = useAuth();
   const router = useRouter();
   const [clientName, setClientName] = useState("");
   const [clientType, setClientType] = useState<ClientType>("new_site");
@@ -37,7 +34,7 @@ export default function NewProjectPage() {
         clientName.trim(),
         clientType,
         new Date(startDate + "T00:00:00"),
-        user!.uid,
+        "anonymous",
         assignedTeam
       );
       router.push(`/projects/${id}`);
@@ -48,7 +45,7 @@ export default function NewProjectPage() {
   };
 
   return (
-    <AuthGuard>
+    <>
       <Navbar />
       <main className="max-w-2xl mx-auto px-4 py-10">
         <div className="mb-6">
@@ -140,6 +137,6 @@ export default function NewProjectPage() {
           </button>
         </form>
       </main>
-    </AuthGuard>
+    </>
   );
 }

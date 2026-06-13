@@ -11,7 +11,6 @@ import PhaseAccordion from "@/components/PhaseAccordion";
 import StatusChip from "@/components/StatusChip";
 import TypeBadge from "@/components/TypeBadge";
 import Navbar from "@/components/Navbar";
-import AuthGuard from "@/components/AuthGuard";
 
 const PHASE_ORDER = [
   "Kickoff",
@@ -101,12 +100,12 @@ export default function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <AuthGuard>
+      <>
         <Navbar />
         <div className="flex justify-center py-20">
           <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
         </div>
-      </AuthGuard>
+      </>
     );
   }
 
@@ -122,7 +121,7 @@ export default function ProjectDetailPage() {
   const blockedCount = tasks.filter((t) => t.status === "blocked" && !t.completed).length;
 
   return (
-    <AuthGuard>
+    <>
       <Navbar />
       <main className="max-w-3xl mx-auto px-4 py-6">
 
@@ -274,6 +273,6 @@ export default function ProjectDetailPage() {
           )}
         </div>
       </main>
-    </AuthGuard>
+    </>
   );
 }

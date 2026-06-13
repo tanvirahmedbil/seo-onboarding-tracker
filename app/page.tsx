@@ -8,7 +8,6 @@ import type { ProjectStatus } from "@/lib/types";
 import { ONBOARDING_DAYS, projectDeliveryBucket, projectDeliveryDays } from "@/lib/utils";
 import ProjectCard from "@/components/ProjectCard";
 import Navbar from "@/components/Navbar";
-import AuthGuard from "@/components/AuthGuard";
 
 export default function Dashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -41,7 +40,7 @@ export default function Dashboard() {
   const delayedRows = reportRows.filter((row) => row.bucket === "delayed");
 
   return (
-    <AuthGuard>
+    <>
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
@@ -104,7 +103,7 @@ export default function Dashboard() {
           </>
         )}
       </main>
-    </AuthGuard>
+    </>
   );
 }
 

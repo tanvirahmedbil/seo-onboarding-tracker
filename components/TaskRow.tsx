@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { Timestamp } from "firebase/firestore";
 import type { Task, TaskStatus } from "@/lib/types";
 import { updateTask, deleteTask, logActivity } from "@/lib/firestore";
-import { useAuth } from "@/lib/auth-context";
 
 interface Props {
   projectId: string;
@@ -14,7 +13,6 @@ interface Props {
 }
 
 export default function TaskRow({ projectId, task, onUpdate, onDelete }: Props) {
-  const { user } = useAuth();
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleVal, setTitleVal] = useState(task.title);
   const [notesOpen, setNotesOpen] = useState(!!task.notes);
@@ -29,17 +27,15 @@ export default function TaskRow({ projectId, task, onUpdate, onDelete }: Props) 
   const save = async (data: Partial<Task>) => {
     onUpdate(task.id, data);
     await updateTask(projectId, task.id, data);
-    if (user) {
-      await logActivity(projectId, {
-        action: "updated_task",
-        taskId: task.id,
-        taskTitle: task.title,
-        field: Object.keys(data)[0],
-        newValue: String(Object.values(data)[0]),
-        performedBy: user.uid,
-        performedByEmail: user.email ?? "",
-      });
-    }
+    await logActivity(projectId, {
+      action: "updated_task",
+      taskId: task.id,
+      taskTitle: task.title,
+      field: Object.keys(data)[0],
+      newValue: String(Object.values(data)[0]),
+      performedBy: "anonymous",
+      performedByEmail: "",
+    });
   };
 
   const handleCheck = async () => {
